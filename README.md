@@ -2,9 +2,10 @@
 
 Orbit Tabs is a self-hosted Chrome tab manager for keeping named browser sessions in sync across devices. A session contains one or more **window slots**, so a two- or three-monitor layout is saved and restored as separate Chrome windows instead of being flattened into one tab list.
 
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/m0peterson/bookmark-sync-gpt/tree/main/cloudflare)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/m0peterson/bookmark-sync-gpt)
 
-Click **Deploy to Render** to create the API and PostgreSQL database from this repository's Blueprint. Render generates the signing secret and wires the database URL automatically; after provisioning finishes, copy the generated `orbit-tabs-api` URL into the extension's **Server URL** field.
+**Cloudflare is the recommended no-card option.** Click **Deploy to Cloudflare**, authorize GitHub, and confirm the deployment. The Worker uses a D1 database and creates its tables and signing secret automatically. When deployment finishes, copy its `workers.dev` URL into the extension's **Server URL** field. Render remains available as an alternative.
 
 ## What is included
 
@@ -14,6 +15,7 @@ Click **Deploy to Render** to create the API and PostgreSQL database from this r
 - Optional live sync: debounced tab/window changes are pushed to the currently assigned session.
 - Conflict-aware API writes using monotonically increasing session revisions.
 - Node.js API backed by PostgreSQL.
+- Dependency-free Cloudflare Worker API backed by D1.
 - Render Blueprint plus a GitHub Actions deploy-hook workflow.
 
 ## Local development
@@ -42,7 +44,16 @@ curl http://localhost:8787/health
 
 Chrome-internal pages (`chrome://…`), the Chrome Web Store, and other privileged URLs cannot be reopened by extensions and are skipped during restore.
 
-## Deploy through GitHub to Render
+## Deploy to Cloudflare without a payment card
+
+1. Click **Deploy to Cloudflare** at the top of this page and sign in with a free Cloudflare account.
+2. Authorize the GitHub repository and confirm creation of the Worker and its `DB` D1 binding.
+3. Open the generated `workers.dev/health` address. A response containing `"ok": true` means it is ready.
+4. Copy the URL without `/health` into the extension's **Server URL** field.
+
+The Cloudflare implementation lives in `cloudflare/`, has no runtime npm dependencies, and lazily creates its D1 schema. Its private token-signing secret is generated inside D1 on the first API request, so there are no secrets to copy into a dashboard.
+
+## Deploy through GitHub to Render (alternative)
 
 ### One-click setup
 
@@ -60,9 +71,9 @@ The extension intentionally does not ship with a hard-coded hosted backend. This
 
 ## Data and security notes
 
-- Passwords are stored as salted `scrypt` hashes; access tokens are signed, expire after 30 days, and are revocable by changing the account password.
+- Passwords are stored as salted slow hashes (`scrypt` on Node/PostgreSQL or PBKDF2-SHA256 on Cloudflare); access tokens are signed, expire after 30 days, and are revocable by changing the account password.
 - Only tab title, URL, pinned state, order, session/window names, and sync timestamps are sent to the server.
-- Use HTTPS in production (Render provides it). Rotate `JWT_SECRET` if it is ever exposed; doing so signs out every device.
+- Use HTTPS in production (both deployment options provide it). On Render, rotate `JWT_SECRET` if it is ever exposed; doing so signs out every device. Cloudflare keeps its generated signing key inside D1.
 - Treat a restored session as navigation: URLs in that session will be opened by Chrome.
 
 ## Commands
@@ -70,4 +81,6 @@ The extension intentionally does not ship with a hard-coded hosted backend. This
 ```bash
 cd server && npm test
 cd server && npm run check
+cd cloudflare && npm test
+cd cloudflare && npm run check
 ```
