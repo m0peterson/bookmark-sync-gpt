@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Orbit Tabs",
+  "version": "1.0.0",
+  "description": "Sync named, multi-window browsing sessions across devices.",
+  "permissions": ["tabs", "storage", "alarms", "favicon"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": { "default_title": "Open Orbit Tabs" },
+  "options_page": "app.html",
+  "commands": {
+    "open-dashboard": {
+      "suggested_key": { "default": "Ctrl+Shift+Y", "mac": "Command+Shift+Y" },
+      "description": "Open Orbit Tabs"
+    }
+  }
+}
