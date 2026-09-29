@@ -28,7 +28,8 @@ const safeEqual = (left, right) => {
 
 export async function hashPassword(password, salt = crypto.getRandomValues(new Uint8Array(16))) {
   const material = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveBits']);
-  const hash = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations: 210_000 }, material, 256);
+  // Cloudflare Workers currently caps PBKDF2 at 100,000 iterations.
+  const hash = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations: 100_000 }, material, 256);
   return `${b64(salt)}:${b64(hash)}`;
 }
 

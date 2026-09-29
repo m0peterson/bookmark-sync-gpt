@@ -11,6 +11,7 @@ button { cursor:pointer; }
 .auth-card { padding:52px clamp(48px, 7vw, 110px); display:flex; flex-direction:column; justify-content:center; }
 .auth-card h1 { font-size:clamp(38px,4vw,62px); line-height:1.02; letter-spacing:-.055em; margin:0 0 18px; }
 .auth-card>p { color:var(--muted); font-size:18px; margin:0 0 38px; }
+.first-run { max-width:440px; margin:-19px 0 23px; padding:12px 14px; border:1px solid #315348; border-radius:9px; background:#10201c; color:#a9bbb5; font-size:12px; line-height:1.5; }
 .auth-card form { display:grid; gap:16px; max-width:440px; }
 label { color:#bac4cf; font-size:13px; font-weight:650; }
 label input { margin-top:7px; }
@@ -21,6 +22,8 @@ button { border:0; border-radius:9px; padding:10px 14px; color:var(--text); font
 .secondary { background:var(--panel2); border:1px solid var(--line); }
 .danger-button { background:transparent; color:var(--danger); border:1px solid #4e292d; }
 .text-button { padding:8px; background:transparent; color:var(--muted); }
+.register-button { background:transparent; border:1px solid #3a4b5b; color:#c8d2dc; }
+.account-note { color:#687584; line-height:1.45; text-align:center; }
 .full { width:100%; margin:32px 0; }
 .auth-art { position:relative; overflow:hidden; background:radial-gradient(circle at 55% 45%,#1b4438 0,#101f22 30%,#0b0f14 68%); }
 .orbit { position:absolute; border:1px solid #78f0ba3b; border-radius:50%; inset:18%; transform:rotate(-18deg); }

@@ -8,6 +8,10 @@ test('Cloudflare password hashes verify', async () => {
   assert.equal(await verifyPassword('incorrect password', stored), false);
 });
 
+test('Cloudflare password hashing stays within the Workers PBKDF2 limit', async () => {
+  await assert.doesNotReject(() => hashPassword('ten-chars+'));
+});
+
 test('Cloudflare tokens reject tampering and expiry', async () => {
   const secret = 'a'.repeat(32);
   const token = await signToken({ sub: 'user-1' }, secret, 60);

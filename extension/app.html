@@ -13,12 +13,14 @@
       <div class="brand large"><span class="logo">O</span><span>Orbit Tabs</span></div>
       <h1>Your browser workspace,<br>on every screen.</h1>
       <p>Self-hosted tab sessions that remember every window.</p>
+      <div class="first-run"><strong>First time here?</strong> Enter any email and a password of at least 10 characters, then click <b>Create account</b>. No email confirmation is required.</div>
       <form id="auth-form">
         <label>Server URL<input id="api-url" type="url" value="http://localhost:8787" required></label>
         <label>Email<input id="email" type="email" autocomplete="email" required></label>
         <label>Password<input id="password" type="password" minlength="10" autocomplete="current-password" required></label>
         <button class="primary" type="submit">Sign in</button>
-        <button id="register" class="text-button" type="button">Create an account instead</button>
+        <button id="register" class="register-button" type="button">Create account</button>
+        <small class="account-note">Your account is stored only on the server shown above. Use the same URL, email and password on every device.</small>
       </form>
     </div>
     <div class="auth-art"><div class="orbit one"></div><div class="orbit two"></div><div class="planet">⌁</div></div>

@@ -45,8 +45,12 @@ async function authenticate(mode) {
     const body = await response.json();
     if (!response.ok) throw new Error(body.error);
     await chrome.storage.local.set({ apiUrl, token: body.token, email: body.user.email });
+    toast(mode === 'register' ? 'Account created. You are signed in.' : 'Signed in.');
     await start();
-  } catch (error) { toast(error.message || 'Cannot reach the server.', true); }
+  } catch (error) {
+    const prefix = mode === 'register' ? 'Could not create account: ' : 'Could not sign in: ';
+    toast(prefix + (error.message || 'Cannot reach the server.'), true);
+  }
 }
 
 async function start() {

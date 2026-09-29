@@ -7,6 +7,31 @@ Orbit Tabs is a self-hosted Chrome tab manager for keeping named browser session
 
 **Cloudflare is the recommended no-card option.** Click **Deploy to Cloudflare**, authorize GitHub, and confirm the deployment. The Worker uses a D1 database and creates its tables and signing secret automatically. When deployment finishes, copy its `workers.dev` URL into the extension's **Server URL** field. Render remains available as an alternative.
 
+## Быстрый старт — что нажимать
+
+1. Нажмите **Deploy to Cloudflare** выше, войдите в бесплатный аккаунт Cloudflare и подтвердите создание Worker и базы D1.
+2. После деплоя Cloudflare покажет адрес вида `https://orbit-tabs-api.<имя>.workers.dev`. Откройте `<этот адрес>/health`: должен появиться ответ `{"ok":true,"runtime":"cloudflare"}`.
+3. Установите расширение: откройте `chrome://extensions` → включите **Режим разработчика** → **Загрузить распакованное расширение** → выберите папку `extension` из этого репозитория.
+4. Откройте Orbit Tabs и вставьте адрес Worker **без `/health`** в поле **Server URL**.
+5. При первом запуске введите любой email, придумайте пароль длиной от 10 символов и нажмите **Create account**. Это регистрация нового аккаунта, а не вход. Подтверждать email не нужно.
+6. На остальных компьютерах укажите **тот же Server URL**, тот же email и пароль, затем нажмите **Sign in**.
+7. Создайте сессию, добавьте по одному **Window slot** на каждое окно/монитор, в каждом окне нажмите **Assign current window**, затем **Save all windows**. Для автоматического сохранения включите **Live sync**.
+
+### Как устроены аккаунты
+
+- Аккаунт не связан с Google, GitHub или Cloudflare Login. Email здесь — только логин внутри вашей собственной базы Orbit Tabs.
+- Все аккаунты и сессии изолированы внутри развернутой вами D1-базы. Разные URL серверов означают разные наборы аккаунтов.
+- Расширение не отправляет письмо и не восстанавливает пароль. Если пароль забыт, понадобится удалить пользователя из D1 или развернуть чистую базу.
+- Пароль не хранится открытым текстом; в D1 записывается только его salted PBKDF2-хеш.
+- Чтобы синхронизация работала между устройствами, на них должны совпадать все три значения: **Server URL, email и пароль**.
+
+### Если появилась ошибка
+
+- `Pbkdf2 failed: iteration counts above 100000...` — на Cloudflare осталась ранняя версия Worker. Запустите деплой последнего коммита ещё раз; текущая версия использует поддерживаемый Cloudflare лимит 100 000 итераций.
+- `Incorrect email or password` при первом запуске — аккаунта ещё нет. Нажмите **Create account**, а не **Sign in**.
+- `The DB binding is required` — при деплое не создалась привязка D1. В настройках Worker добавьте D1 binding с именем `DB` или повторите деплой через кнопку.
+- `/health` не открывается — в **Server URL** должен быть HTTPS-адрес Worker, например `https://orbit-tabs-api.username.workers.dev`, без пробелов и дополнительных путей.
+
 ## What is included
 
 - Manifest V3 Chrome extension with a full-page dashboard.
