@@ -35,4 +35,3 @@ export function verifyToken(token, secret) {
     return null;
   }
 }
-
