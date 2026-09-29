@@ -2,6 +2,10 @@
 
 Orbit Tabs is a self-hosted Chrome tab manager for keeping named browser sessions in sync across devices. A session contains one or more **window slots**, so a two- or three-monitor layout is saved and restored as separate Chrome windows instead of being flattened into one tab list.
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/m0peterson/bookmark-sync-gpt)
+
+Click **Deploy to Render** to create the API and PostgreSQL database from this repository's Blueprint. Render generates the signing secret and wires the database URL automatically; after provisioning finishes, copy the generated `orbit-tabs-api` URL into the extension's **Server URL** field.
+
 ## What is included
 
 - Manifest V3 Chrome extension with a full-page dashboard.
@@ -40,10 +44,17 @@ Chrome-internal pages (`chrome://…`), the Chrome Web Store, and other privileg
 
 ## Deploy through GitHub to Render
 
-1. Push this repository to GitHub.
-2. In Render, create a **Blueprint** from that repository. `render.yaml` provisions the web service and PostgreSQL database and connects them automatically.
-3. After the first deploy, copy the service's public URL into the extension sign-in screen.
-4. For deploy-on-push, Render already watches the linked branch. Alternatively, disable Render's native auto-deploy, create a Render **Deploy Hook**, save it as the GitHub Actions secret `RENDER_DEPLOY_HOOK_URL`, and keep `.github/workflows/deploy.yml` enabled.
+### One-click setup
+
+1. Click the **Deploy to Render** button above and sign in to Render with GitHub.
+2. Confirm the Blueprint. It provisions the web service and PostgreSQL database described by `render.yaml`; no database URL or JWT secret needs to be entered manually.
+3. Wait for the health check to turn green, then copy the public `orbit-tabs-api` URL into the extension sign-in screen.
+
+The button deploys from the canonical repository. To deploy your own changes, fork the repository and change the `repo=` value in the button URL to the URL of your fork before clicking it.
+
+### Automatic updates
+
+Render watches the linked GitHub branch and deploys new commits automatically. Alternatively, disable Render's native auto-deploy, create a Render **Deploy Hook**, save it as the GitHub Actions secret `RENDER_DEPLOY_HOOK_URL`, and keep `.github/workflows/deploy.yml` enabled. The workflow runs the test suite before triggering the hook.
 
 The extension intentionally does not ship with a hard-coded hosted backend. This keeps account and browsing data in infrastructure you control.
 
@@ -60,4 +71,3 @@ The extension intentionally does not ship with a hard-coded hosted backend. This
 cd server && npm test
 cd server && npm run check
 ```
-
