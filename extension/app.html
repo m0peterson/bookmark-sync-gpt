@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orbit Tabs</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <section id="auth" class="auth-shell">
+    <div class="auth-card">
+      <div class="brand large"><span class="logo">O</span><span>Orbit Tabs</span></div>
+      <h1>Your browser workspace,<br>on every screen.</h1>
+      <p>Self-hosted tab sessions that remember every window.</p>
+      <div class="first-run"><strong>First time here?</strong> Enter any email and a password of at least 10 characters, then click <b>Create account</b>. No email confirmation is required.</div>
+      <form id="auth-form">
+        <label>Server URL<input id="api-url" type="url" value="http://localhost:8787" required></label>
+        <label>Email<input id="email" type="email" autocomplete="email" required></label>
+        <label>Password<input id="password" type="password" minlength="10" autocomplete="current-password" required></label>
+        <button class="primary" type="submit">Sign in</button>
+        <button id="register" class="register-button" type="button">Create account</button>
+        <small class="account-note">Your account is stored only on the server shown above. Use the same URL, email and password on every device.</small>
+      </form>
+    </div>
+    <div class="auth-art"><div class="orbit one"></div><div class="orbit two"></div><div class="planet">⌁</div></div>
+  </section>
+
+  <main id="app" hidden>
+    <aside>
+      <div class="brand"><span class="logo">O</span><span>Orbit Tabs</span></div>
+      <button id="new-session" class="primary full">＋ New session</button>
+      <div class="section-label">SESSIONS</div>
+      <nav id="session-list"></nav>
+      <div class="sidebar-footer">
+        <div id="account-email"></div>
+        <button id="sign-out" class="text-button">Sign out</button>
+      </div>
+    </aside>
+    <section class="workspace">
+      <header>
+        <div>
+          <div class="eyebrow">CURRENT SESSION</div>
+          <input id="session-name" class="title-input" maxlength="100" aria-label="Session name">
+          <div id="sync-state" class="sync-state">Ready</div>
+        </div>
+        <div class="header-actions">
+          <label class="toggle"><input id="live-sync" type="checkbox"><span></span> Live sync</label>
+          <button id="delete-session" class="danger-button">Delete</button>
+          <button id="refresh" class="secondary">↻ Refresh</button>
+          <button id="restore" class="secondary">Restore layout</button>
+          <button id="save" class="primary">Save all windows</button>
+        </div>
+      </header>
+      <div class="content">
+        <div class="intro-row">
+          <div><h2>Window layout</h2><p>Assign each browser window to a slot, then restore this layout on any device.</p></div>
+          <button id="add-window" class="secondary">＋ Add window slot</button>
+        </div>
+        <div id="window-grid"></div>
+        <div id="empty" class="empty" hidden><div class="empty-icon">▦</div><h2>No sessions yet</h2><p>Create a session to save your first multi-window workspace.</p><button class="primary create-empty">Create session</button></div>
+      </div>
+    </section>
+  </main>
+  <template id="window-template">
+    <article class="window-card">
+      <div class="card-head">
+        <div class="window-dot"></div><input class="window-name" maxlength="100">
+        <span class="tab-count"></span><button class="icon-button remove-window" title="Remove window slot">×</button>
+      </div>
+      <div class="assignment"></div>
+      <div class="tab-list"></div>
+      <div class="card-actions"><button class="secondary assign">Assign current window</button><button class="secondary open">Open as new window</button></div>
+    </article>
+  </template>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
